@@ -43,6 +43,12 @@ for col in df1.columns:
         
 catList #List of variables that need encoding
 
-        
-        
+#pip install plotly
+#pip install nbformat
+
+import plotly.express as px
+import nbformat
+
+fig = px.histogram(df, x="price", color="trim_level")
+fig.show()
     
