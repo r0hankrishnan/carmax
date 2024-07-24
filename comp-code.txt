@@ -1,0 +1,402 @@
+---
+title: "carmax"
+author: "Rohan Krishnan"
+date: "2023-12-18"
+output: html_document
+---
+### Load packages and data
+```{r}
+#Load libraries
+library(tidyverse)
+library(ggplot2)
+library(ggcorrplot)
+library(ggthemes)
+
+#Load in data
+setwd("~/Downloads")
+data <- read.csv("winter_2024_data.csv")
+
+#Glimpse data
+glimpse(data)
+
+#Summarize data
+summary(data)
+
+#List column names
+cols <- colnames(data)
+```
+
+### Basic Data Description
+```{r}
+#Create list of variable names relating to appraised vehicles
+f_index_app <- grep("appraisal",cols,fixed=TRUE)
+factor_list_app <- vector()
+
+for(i in f_index_app){
+  value <- cols[i]
+  factor_list_app[[length(factor_list_app) + 1]] <- value
+}
+
+#List unique values of each appraisal column
+for (i in factor_list_app){
+  x = n_distinct(data[i])
+  print(paste(i," distinct values: ", x))
+}
+
+#Check how many distinct obs of make, model, trim, engine, cylinders, horsepower, fuel cap, type, color for the sold cars
+factor_list_sold <- cols[-f_index_app]
+
+for(i in factor_list_sold){
+  x = n_distinct(data[i])
+  print(paste(i, "distinct values: ", x))
+}
+
+#Check na values of each column
+colSums(is.na(data))
+```
+
+### Exploratory Data Analysis
+```{r}
+#How many observations per model and make
+data %>%
+  group_by(model_appraisal) %>%
+  summarise(n = n())
+
+data %>% 
+  group_by(make_appraisal) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+```
+
+### Relationships
+```{r}
+#Create clone data
+data1 <- data
+data1[data1 == "null"] <- NA
+data1 <- na.omit(data1)
+
+#List columns that need to be changed from chr to int & need no other modification
+c_to_i <- c("days_since_offer", "online_appraisal_flag", "fuel_capacity", "mpg_highway", "mpg_city", "fuel_capacity_appraisal", "mpg_highway_appraisal", "mpg_city_appraisal")
+
+for(i in c_to_i){
+  data1[,i] <- as.integer(data1[,i])
+}
+
+#List columns that need to have a character removed and then converted to numeric
+c_to_n <- c("engine_appraisal", "engine")
+
+for(i in c_to_n){
+  data1[,i] <- data1[,i] %>%
+    str_replace("L","")
+  data1[,i] <- as.numeric(data1[,i])
+}
+
+#Create list of only numeric or int variables for relationship analysis
+num_int_var <- vector()
+for (i in cols){
+  if (is.character(data1[,i]) == FALSE){
+    num_int_var[length(num_int_var) + 1] <- i
+    }
+}
+
+cor<-data1[num_int_var]
+cor <- na.omit(cor)
+cor <- as.data.frame(cor(cor))
+
+#Create full correlation matrix
+cor %>%
+  ggcorrplot(method = "square", type = "lower", ggtheme = ggplot2::theme_gray(), outline.color = "white", colors = c('#00529F',"white", '#FFD520'), lab = TRUE, lab_size = 1, hc.order = TRUE, tl.cex = 7)
+
+#Create separate correlation matrices for appraised and purchased vehicles
+cor[grep("appraisal", num_int_var), grep("appraisal", num_int_var)] %>%
+  ggcorrplot(method = "square", type = "full", ggtheme = ggplot2::theme_gray(), colors = c('#00529F',"white", '#FFD520'), lab = TRUE, lab_size = 2)
+
+cor[- grep("appraisal", num_int_var), - grep("appraisal", num_int_var)] %>%
+  ggcorrplot(method = "square", type = "full", ggtheme = ggplot2::theme_gray(), colors = c('#00529F',"white", '#FFD520'), lab = TRUE, lab_size = 2)
+```
+
+```{r}
+data1 %>%
+  group_by(model_appraisal) %>%
+  summarise(n = n())
+
+data1 %>% 
+  group_by(make_appraisal) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+
+state_to_region <- function(state) {
+  regions <- list(
+    Northeast = c("CT", "ME", "MA", "NH", "RI", "VT", "NY", "NJ", "PA"),
+    Midwest = c("IL", "IN", "MI", "OH", "WI", "IA", "KS", "MN", "MO", "NE", "ND", "SD"),
+    South = c("DE", "FL", "GA", "MD", "NC", "SC", "VA", "WV", "AL", "KY", "MS", "TN", "AR", "LA", "OK", "TX"),
+    West = c("AZ", "CO", "ID", "MT", "NV", "NM", "UT", "WY", "AK", "CA", "HI", "OR", "WA")
+  )
+  
+ # Iterate through regions and return the corresponding region
+  for (region in names(regions)) {
+    if (state %in% regions[[region]]) {
+      return(region)
+    }
+  }
+  
+  # If the state is not in any region, return 'Other' or handle it as needed
+  return("Other")
+}
+
+# Apply the function to create a new column 'region'
+data1$region <- sapply(data1$state, state_to_region)
+
+mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+data1 %>%
+  select(region, make, make_appraisal) %>%
+  group_by(region)%>%
+  summarise(make_pop = mode(make),
+            app_make_pop = mode(make_appraisal))
+
+```
+
+```{r}
+#How does appraisal offer and selling price vary by days since offer?
+data1 %>%
+  select(days_since_offer, price, appraisal_offer) %>%
+  group_by(days_since_offer) %>%
+  summarise(mean_app_offer = mean(appraisal_offer),
+            mean_price = mean(price)) %>%
+  gather(Type,Price, -days_since_offer) %>%
+  ggplot(aes(x = days_since_offer, y = Price, col = Type)) + 
+  geom_point() + 
+  geom_smooth() +
+  labs(y = "Amount (in $)", 
+       x = "Days Since Offer", 
+       title = "Days Since Offer vs Price of Vehicle Purchased and Appraisal Offer Accepted"
+       ) +
+  scale_color_manual(values = c("#00529F", "#FFD520")) + 
+  theme(panel.background = element_rect(c("#F5F5F5")),
+        panel.grid.minor = element_blank(),
+        panel.grid.major = element_blank())
+```
+
+```{r}
+#How does the model year of the appraised car affect the appraisal offer and the price of the car the customer ends up buying?
+data1 %>%
+  select(model_year_appraisal, price, appraisal_offer) %>%
+  group_by(model_year_appraisal) %>%
+  summarise(mean_app_offer = mean(appraisal_offer),
+            mean_price = mean(price)) %>%
+  gather(Type, Price, -model_year_appraisal) %>%
+  ggplot(aes(x = model_year_appraisal, y = Price, col = Type)) + 
+  geom_point() + 
+  geom_smooth() +
+  labs(x = )
+  ggthemes:: scale_color_tableau()
+```
+
+```{r}
+#How does the appraisal offer affect the price of the vehicle that a customer purchases?
+data1 %>% 
+  slice_sample(n = 10000) %>%
+  ggplot(aes(x = appraisal_offer, y = price)) + 
+  geom_point() + 
+  geom_smooth() + 
+  ggthemes::scale_color_tableau()
+```
+
+```{r}
+#What is the most popular model by state?
+mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+popular_models_by_state <- data1 %>%
+  select(state, model, model_appraisal) %>%
+  group_by(state) %>%
+  summarise(model_pop = mode(model),
+            app_model_pop = mode(model_appraisal))
+
+popular_makes_by_state <- data1 %>%
+  select(state, make, make_appraisal) %>%
+  group_by(state)%>%
+  summarise(make_pop = mode(make),
+            app_make_pop = mode(make_appraisal))
+
+library(flextable)
+library(extrafont)
+
+#Create table to display models
+popular_models_by_state %>%
+  flextable() %>%
+  set_caption(
+    caption = as_paragraph(
+      as_chunk("Most Popular Purchased and Trade-In Models by State",
+               props = fp_text_default(font.family = "Times New Roman",
+                                       font.size = 12,
+                                       italic = TRUE)))) %>%
+  set_header_labels(values = list(
+    state = "State",
+    model_pop = "Most Popular Purchased Vehical Model",
+    app_model_pop = "Most Popular Appraised Vehical Model")) %>%
+  set_table_properties(layout = "autofit") %>%
+  font(part = "all", fontname = "Times New Roman") %>%
+  fontsize(size = 12)
+
+#Create table to display makes
+popular_makes_by_state %>%
+  flextable() %>%
+  set_caption(
+    caption = as_paragraph(
+      as_chunk("Most Popular Purchased and Trade-In Makes by State",
+               props = fp_text_default(font.family = "Times New Roman",
+                                       font.size = 12,
+                                       italic = TRUE)))) %>%
+  set_header_labels(values = list(
+    state = "State",
+    make_pop = "Most Popular Purchased Vehical Make",
+    app_make_pop = "Most Popular Appraised Vehical Make")) %>%
+  set_table_properties(layout = "autofit") %>%
+  font(part = "all", fontname = "Times New Roman") %>%
+  fontsize(size = 12)
+```
+
+```{r}
+#Do cars that get appraised online have higher appraisal offers than those appraised offline? 
+data1 %>%
+  select(online_appraisal_flag, appraisal_offer) %>%
+  group_by(online_appraisal_flag) %>%
+  summarise(mean_offer = mean(appraisal_offer)) %>%
+  ggplot(aes(x = online_appraisal_flag, y = mean_offer)) + 
+  geom_bar(stat = "identity", fill = "#00529F", color = "#FFD520") + 
+  xlab("In Store vs Online (1 = Online)") +
+  ylab("Average Appraisal Offer") +
+  ggtitle("Average Appraisal Offer for In-Store vs Online Trade") +
+  theme(panel.background = element_blank(),
+        panel.grid.minor = element_line(color = "light grey"),
+        axis.line = element_line(color = "black"))
+
+online_offers <- data1 %>%
+  select(online_appraisal_flag, appraisal_offer) %>%
+  group_by(online_appraisal_flag) %>%
+  filter(online_appraisal_flag == 1)
+
+store_offers <- data1 %>%
+  select(online_appraisal_flag, appraisal_offer) %>%
+  group_by(online_appraisal_flag) %>%
+  filter(online_appraisal_flag == 0)
+
+#Hypothesis test to see if average online appraisal is significantly higher than in-store appraisal
+t.test(online_offers$appraisal_offer,store_offers$appraisal_offer)
+```
+
+```{r}
+#What are the differences between cars being bought online versus in-person?
+data1 %>%
+  select(online_appraisal_flag, all_of(factor_list_sold)) %>%
+  group_by(online_appraisal_flag) %>%
+  #filter(online_appraisal_flag != "null" & online_appraisal_flag != 0) %>%
+  ggplot(aes(x = model_year, y = price)) +
+  geom_point() + 
+  geom_smooth() + 
+  facet_wrap(~online_appraisal_flag) +
+  ggthemes::scale_fill_tableau() #Pretty big spread of values-- doesn't seem to be much of a difference between 0 and 1
+```
+
+```{r}
+#Do people buy similar mpg cars?
+library(gridExtra)
+mpg <- data1 %>%
+  select(mpg_city_appraisal, mpg_highway_appraisal, mpg_city, mpg_highway)
+
+p1 <- mpg %>%
+  ggplot(aes(mpg_city_appraisal, mpg_highway_appraisal)) + 
+  geom_point() + 
+  geom_smooth()
+
+p2 <- mpg %>%
+  ggplot(aes(mpg_city_appraisal, mpg_city)) + 
+  geom_point() + 
+  geom_smooth()
+
+p3 <- mpg %>%
+  ggplot(aes(mpg_city_appraisal, mpg_highway)) + 
+  geom_point() + 
+  geom_smooth()
+
+p4 <- mpg %>%
+  ggplot(aes(mpg_highway_appraisal, mpg_city)) + 
+  geom_point() + 
+  geom_smooth()
+
+p5 <- mpg %>%
+  ggplot(aes(mpg_highway_appraisal, mpg_highway)) + 
+  geom_point() + 
+  geom_smooth()
+
+p6 <- mpg %>%
+  ggplot(aes(mpg_city, mpg_highway)) + 
+  geom_point() + 
+  geom_smooth()
+
+grid.arrange(p1, p2, p3, p4, p5, p6)
+```
+
+#Basic Modelling
+```{r}
+#What variables are unreasonable to use? - Model (too many distinct models), can vehicle type be condensed?, color might not be too relevant
+
+#Create Random Forest
+appraisal <- data1 %>%
+  select(price, all_of(factor_list_app))
+
+appraisal <- appraisal %>%
+  select(-model_appraisal, -color_appraisal)
+
+appraisal <- appraisal %>%
+  mutate(id = row_number())
+
+library(tidyverse)
+appraisal <-
+  appraisal %>%
+  mutate(make_appraisal = forcats::fct_lump(make_appraisal, n = 15),
+         trim_level_appraisal = as.factor(trim_level_appraisal), 
+         vehicle_type_appraisal = as.factor(vehicle_type_appraisal))
+
+set.seed(100)
+
+rf_train <- appraisal %>%
+  sample_frac(0.80)
+
+rf_test <- anti_join(appraisal, rf_train, by = "id")
+
+rf_train <- 
+  rf_train %>%
+  select(-id)
+
+rf_test <- 
+  rf_test %>%
+  select(-id)
+
+
+
+library(randomForest)
+library(doMC)
+registerDoMC()
+
+set.seed(100)
+
+mod_rf <- foreach(ntree = rep(100, 1), .combine = randomForest::combine, 
+                  .multicombine = TRUE, .packages = "randomForest") %dopar% {
+                    randomForest(price ~ ., rf_train, ntree = ntree, 
+                                 importance = TRUE, do.trace = TRUE)
+                  }
+varImpPlot(mod_rf)
+
+pricePred <- predict(mod_rf, rf_test)
+
+print(mean((pricePred - rf_test$price)^2))
+
+```
