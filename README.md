@@ -4,3 +4,6 @@
 ## Table of Contents
 
 ## Introduction
+
+## EDA
+For my inital exploration of the data, I used a simple python file (`eda/raw-eda.py`). In this file I iteratively wrote code to explore and clean the data using a side-by-side interactive jupyter notebook session. This allowed me to iteratively adjust my data while not having to worry about code blocks or markdown cells. The purpose of this file is to do a messier exploration of the entire data, identify areas of interest, and clean up any discrepencies in the data. Then, using sections of the code from this file, I will make focused notebooks that convey a narrative and can be presented to CarMax. 
