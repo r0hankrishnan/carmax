@@ -2,7 +2,7 @@
 *This is an expansion on my work for the CarMax analytics showcase. If you are visiting from my CV, you can view my R code for the competition in the `comp-code.txt` file. Apologies for the incomplete README, I am currently restarting this project in Python!*
 
 <p align="center">
-  ![CarMax Logo](./assets/logo.png)
+  <img src = "./assets/logo.png">
 </p
   
 ## Table of Contents
