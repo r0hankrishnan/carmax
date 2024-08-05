@@ -51,4 +51,6 @@ import nbformat
 
 fig = px.histogram(df, x="price", color="trim_level")
 fig.show()
+
+fig = px.d
     
