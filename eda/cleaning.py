@@ -130,4 +130,22 @@ df6 = df5.copy()
 pd.concat([df6, model_year_df, model_year_appraisal_df], axis = 1)
 df = df6.drop(["model_year", "model_year_appraisal"], axis = 1)
 
+#Let's construct different data sets for things we might want to do
 
+#First, a data with pretty much every column for visualization
+dfViz = df4
+
+dfViz["cylinders"] = df3["cylinders"]
+dfViz["cylinders_appraisal"] = df3["cylinders_appraisal"]
+
+dfViz.to_csv("../data/viz.csv")
+
+#If we want to predict price, we need the columns for appraised vehicles and price
+modeling_cols = ["price","appraisal_offer"]
+for i in df6.columns:
+    if "_appraisal" in i:
+        modeling_cols.append(i)
+
+dfModeling = df6[modeling_cols]
+
+dfModeling.to_csv("../data/modeling.csv")
