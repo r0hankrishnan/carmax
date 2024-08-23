@@ -128,8 +128,50 @@ model_year_appraisal_df = pd.get_dummies(df5["model_year_appraisal"]).rename(
 #Copy df5, add dummies, drop non-dummy model_year cols
 df6 = df5.copy()
 pd.concat([df6, model_year_df, model_year_appraisal_df], axis = 1)
-df = df6.drop(["model_year", "model_year_appraisal"], axis = 1)
+df6 = df6.drop(["model_year", "model_year_appraisal"], axis = 1)
 
+#Create region column
+Northeast =  ["CT", "ME", "MA", "NH", "RI", "VT", "NY", "NJ", "PA"]
+Midwest = ["IL", "IN", "MI", "OH", "WI", "IA", "KS", "MN", "MO", "NE", "ND", "SD"]
+South = ["DE", "FL", "GA", "MD", "NC", "SC", "VA", "WV", "AL", "KY", "MS", "TN", "AR", "LA", "OK", "TX"]
+West = ["AZ", "CO", "ID", "MT", "NV", "NM", "UT", "WY", "AK", "CA", "HI", "OR", "WA"]
+
+df6["region"] = df["state"].apply(lambda x: "Northeast" if x in Northeast else
+                                  ("Midwest" if x in Midwest else
+                                   ("South" if x in South else
+                                    ("West" if x in West else "Other"))))
+
+df6["region"].unique()
+df6.columns
+
+#Need to group and standardize color columns
+df6["color"].unique()
+df6["color_appraisal"].unique()
+
+Black = ["Black", "Midnight Black", "Blueprint/Mid Blk", "Celestial Black"]
+Gray = ["Gray", "Magnetic Gray", "Moon Dust"]
+Red = ["Red", "Ruby Flare", "Opulent Amber", "Barcelona Red"]
+Silver = ["Silver", "Celestial Silver", "Silver Sky", "Classic Silver"]
+White = ["White", "Pearl", "Blizzard", "Super White"]
+Blue = ["Blue", "Blueprint", "Blue Flame"]
+
+
+df6["color_grouped"] = df["color"].apply(lambda x: "Black" if x in Black else
+                                         ("Gray" if x in Gray else
+                                          ("Red" if x in Red else
+                                           ("Silver" if x in Silver else
+                                           ("White" if x in White else
+                                            ("Blue" if x in Blue else "Other"))))))
+
+df6["color_grouped_appraisal"] = df["color_appraisal"].apply(lambda x: "Black" if x in Black else
+                                         ("Gray" if x in Gray else
+                                          ("Red" if x in Red else
+                                           ("Silver" if x in Silver else
+                                           ("White" if x in White else
+                                            ("Blue" if x in Blue else "Other"))))))
+
+df7 = df6.copy().drop(["color", "color_appraisal"], axis = 1)
+df7.columns
 #Let's construct different data sets for things we might want to do
 
 #First, a data with pretty much every column for visualization
@@ -137,12 +179,16 @@ dfViz = df4
 
 dfViz["cylinders"] = df3["cylinders"]
 dfViz["cylinders_appraisal"] = df3["cylinders_appraisal"]
+dfViz["region"] = df6["region"]
+dfViz["color_grouped"] = df6["color_grouped"]
+dfViz["color_grouped_appraisal"] = df6["color_grouped_appraisal"]
+
 
 dfViz.to_csv("../data/viz.csv")
 
 #If we want to predict price, we need the columns for appraised vehicles and price
-modeling_cols = ["price","appraisal_offer"]
-for i in df6.columns:
+modeling_cols = ["price","appraisal_offer", "region", "days_since_offer"]
+for i in df7.columns:
     if "_appraisal" in i:
         modeling_cols.append(i)
 
