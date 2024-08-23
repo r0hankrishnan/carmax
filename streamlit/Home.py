@@ -15,7 +15,12 @@ value_choice = ["Sold Vehicle Make", "Sold Vehicle Model",
                 "Appraised Vehicle Make", "Appriased Vehicle Model",
                 "Sold Vehicle Color", "Appraised Vehicle Color"]
 
-region = st.selectbox(label="Choose a region", options=region_choice)
+with st.sidebar:
+    st.subheader("Global Filters")
+    st.divider()
+    region = st.selectbox(label="Choose a region", options=region_choice)
+
+
 value = st.selectbox(label="Choose a variable to look at", options=value_choice)
 
 bar_data = data.copy().rename(columns={
@@ -30,3 +35,7 @@ top10_data = bar_data[bar_data["region"] == region][value].value_counts().to_fra
 
 fig = px.bar(top10_data, x = value, y = "count")
 st.plotly_chart(fig)
+
+scatter_data = data[data["region"] == region]
+fig2 = px.scatter(scatter_data, x = "price", y = "appraisal_offer")
+st.plotly_chart(fig2)
