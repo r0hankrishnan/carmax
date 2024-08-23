@@ -30,4 +30,3 @@ top10_data = bar_data[bar_data["region"] == region][value].value_counts().to_fra
 
 fig = px.bar(top10_data, x = value, y = "count")
 st.plotly_chart(fig)
-
