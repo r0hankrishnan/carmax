@@ -24,7 +24,7 @@ region_dummies = pd.get_dummies(data.region).rename(
     columns = rename_region_cols
 )
 
-df = pd.concat([data, color_dummies, region_dummies], axis = 1).drop(["color_grouped_appraisal"], axis = 1)
+df = pd.concat([data, color_dummies, region_dummies], axis = 1).drop(["color_grouped_appraisal","make_appraisal", "model_appraisal", "region"], axis = 1)
 df.columns
 
 # appraisal_cols = list()
@@ -34,7 +34,7 @@ df.columns
 #     else:
 #         pass
     
-X = df.drop(["price", "make_appraisal", "model_appraisal", "region"], axis = 1)
+X = df.drop(["price"], axis = 1)
 y = df.price
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=1)
@@ -87,6 +87,5 @@ print('R^2:', metrics.r2_score(y_test, y_pred))
 print('Mean Poisson Deviance:', metrics.mean_poisson_deviance(y_test, y_pred))
 print('Mean Gamma Deviance:', metrics.mean_gamma_deviance(y_test, y_pred))
 
-
-
+#There is likely some level of colinearity going on here
 
