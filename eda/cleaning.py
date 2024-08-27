@@ -53,9 +53,9 @@ df3["cylinders"].dtype
 df3["cylinders_appraisal"].dtype
 
 #Create dummy even column for cylinders and cylinders_appraisal
-df3["cylinders_even"] = np.where(df3["cylinders"]%2==0,1,0)
+df3["cylinders_even"] = np.where(df3["cylinders"]%2==0,True,False)
 df3["cylinders_even_appraisal"] = np.where(
-    df3["cylinders_appraisal"]%2==0, 1, 0)
+    df3["cylinders_appraisal"]%2==0,True,False)
 
 #Recheck unique values
 for i in ["cylinders", "cylinders_appraisal", 
@@ -63,9 +63,9 @@ for i in ["cylinders", "cylinders_appraisal",
     print(df3[i].unique())
     
 #Create dummy columns for "high" cylinder values (based on googling)
-df3["cylinders_high"] = np.where(df3["cylinders"] >= 6, 1, 0)
+df3["cylinders_high"] = np.where(df3["cylinders"] >= 6, True, False)
 df3["cylinders_high_appraisal"] = np.where(
-    df3["cylinders_appraisal"] >= 6, 1, 0)
+    df3["cylinders_appraisal"] >= 6, True, False)
 
 #Drop cylinder columns
 df4 = df3.copy().drop(["cylinders", "cylinders_appraisal"], axis = 1)
