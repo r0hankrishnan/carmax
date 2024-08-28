@@ -1,4 +1,5 @@
 import pandas as pd
+import plotly.express as px
 data = pd.read_csv("../data/viz.csv").drop("Unnamed: 0", axis = 1)
 value_choice = ["Vehicle Make", "Vehicle Model", 
                 "Vehicle Color"]
@@ -29,3 +30,52 @@ top10_data_sold = bar_data[bar_data["region"] == "Northeast"][value_sold].value_
 import plotly.express as px
 fig = px.bar(top10_data_sold, x = "value", y = "count")
 fig.show()
+
+num_cols = list()
+for i in data.columns:
+    if data[i].dtype == "int64" or data[i].dtype == "int32" or data[i].dtype == "float64" or data[i].dtype == "float64":
+        num_cols.append(i)
+    else:
+        pass 
+
+x_choice = data.columns
+y_choice = num_cols
+
+x_choice = "medium_suv"
+y_choice = "price"
+region = "West"
+
+data.dtypes
+def generate_xy_choice_fig():
+    if data[x_choice].dtype == "bool" or data[x_choice] == "object":
+        fig = px.box(data, x = x_choice, y = y_choice,
+                     labels={
+                         x_choice: x_choice.title().strip().replace("_", " "),
+                         y_choice: y_choice.title().strip().replace("_", " ")
+                     },
+                     title = x_choice.title().replace("_", " ") + " vs " + y_choice.title().strip().replace("_", " ") + " | Region: " + region
+                     )
+        
+    else:
+        fig = px.scatter(data, x = x_choice, y = y_choice, 
+                         opacity=0.60, 
+                         labels={
+                             x_choice: x_choice.title().strip().replace("_", " "),
+                             y_choice: y_choice.title().strip().replace("_", " ")
+                         },
+                         title = x_choice.title().replace("_", " ") + " vs " + y_choice.title().strip().replace("_", " ") + " | Region: " + region
+                         )
+    
+    return fig
+
+fig = generate_xy_choice_fig()
+fig.show()
+
+
+x_list = data.columns
+
+capital = [word.strip().title().replace("_", " ") for word in x_list]
+
+capital[0].lower()
+
+capital[1].lower().replace(" ", "_")

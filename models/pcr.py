@@ -47,7 +47,7 @@ mse = []
 score = -1 * model_selection.cross_val_score(regressor, np.ones((n,1)), y.ravel(), cv=kf_10, scoring='neg_mean_squared_error').mean()    
 mse.append(score)
 
-# Calculate MSE using CV for the 19 principle components, adding one component at the time.
+# Calculate MSE using CV for the 8 principle components, adding one component at the time.
 for i in np.arange(1, 8):
     score = -1 * model_selection.cross_val_score(regressor, reduced_X[:,:i], y.ravel(), cv=kf_10, scoring='neg_mean_squared_error').mean()
     mse.append(score)
