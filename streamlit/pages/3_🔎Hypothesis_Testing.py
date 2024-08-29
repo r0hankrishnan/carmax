@@ -3,6 +3,12 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 
+st.set_page_config(page_title="Hypothesis Testing", 
+                   page_icon="🔎", 
+                   layout="centered", 
+                   initial_sidebar_state="auto", 
+                   menu_items=None)
+
 #Page title
 st.title("Run a t-test to determine if there is a significant difference between groups")
 

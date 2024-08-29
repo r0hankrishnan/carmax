@@ -3,6 +3,12 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 
+st.set_page_config(page_title="Explore", 
+                   page_icon="📈", 
+                   layout="centered", 
+                   initial_sidebar_state="auto", 
+                   menu_items=None)
+
 #Page title
 st.title("Explore the data")
 

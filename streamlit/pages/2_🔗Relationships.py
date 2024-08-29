@@ -3,6 +3,12 @@ import plotly.express as px
 import pandas as pd
 import numpy as np
 
+st.set_page_config(page_title="Relationships", 
+                   page_icon="🔗", 
+                   layout="centered", 
+                   initial_sidebar_state="auto", 
+                   menu_items=None)
+
 #Page title
 st.title("Explore the relationships between a vehicle's characteristics and its sale or appraisal price")
 
