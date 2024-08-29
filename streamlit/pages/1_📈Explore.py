@@ -158,7 +158,7 @@ def generate_xy_choice_fig():
                          x_choice.lower().replace(" ", "_"): x_choice.title().strip().replace("_", " "),
                          y_choice.lower().replace(" ", "_"): y_choice.title().strip().replace("_", " ")
                      },
-                     title = x_choice.title().strip().replace("_", " ") + " by " + y_choice.title().strip().replace("_", " ") +" | Region: " + region
+                     title = y_choice.title().strip().replace("_", " ") + " by " + x_choice.title().strip().replace("_", " ") +" | Region: " + region
                      )
         fig.update_traces(marker_color = "#ffd520")
     
