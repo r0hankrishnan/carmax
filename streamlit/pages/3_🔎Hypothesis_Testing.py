@@ -36,7 +36,7 @@ if test_type == "T-test":
     st.markdown("*ANOVA testing coming soon!*")
     
     #T-test form
-    with st.form("t_test", clear_on_submit=True):
+    with st.form("t_test", clear_on_submit=False):
         #Choice lists
         var_to_examine_choice = ["Appraisal Offer", "Price"]
         group_to_compare_choice = ["Online Appraisal Flag", "Trim Level Premium Appraisal", "Trim Level Premium",
