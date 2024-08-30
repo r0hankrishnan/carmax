@@ -19,7 +19,8 @@ def import_viz_data():
     return data
 
 #Load data
-data = import_viz_data()
+with st.spinner("Loading data..."):
+    data = import_viz_data()
 
 #Define filter choices 
 region_choice = np.append("All", data.region.unique())
@@ -47,7 +48,7 @@ bar_data = data.copy().rename(columns={
 #Generate the top 10 {variable} sold in {region}
 def generate_top10_data_sold():
     value_sold = "Sold " + value
-
+    
     if region != "All":
         top10_data_sold = bar_data[bar_data["region"] == region][value_sold].value_counts().to_frame().sort_values(by="count",ascending=False).head(10).reset_index().rename(
             columns = {value_sold:"value"}
@@ -62,7 +63,7 @@ def generate_top10_data_sold():
 #Generate the top 10 {variable} appraised in {region}
 def generate_top10_data_appraised():
     value_appraised = "Appraised " + value
-
+    
     if region != "All":
         top10_data_appraised = bar_data[bar_data["region"] == region][value_appraised].value_counts().to_frame().sort_values(by="count",ascending=False).head(10).reset_index().rename(
             columns = {value_appraised:"value"}
@@ -75,34 +76,37 @@ def generate_top10_data_appraised():
     return top10_data_appraised
 
 #Create data  
-top10_data_sold = generate_top10_data_sold()
-top10_data_appraised = generate_top10_data_appraised()
+with st.spinner("Calculating top 10..."):
+    top10_data_sold = generate_top10_data_sold()
+    top10_data_appraised = generate_top10_data_appraised()
 
 #Generate top 10 sold features bar plot
-fig_sold = px.bar(top10_data_sold, x="value", y="count",
-                  labels = {
-                      "value":" ",
-                      "count":"Count"
-                  },
-                  title = "Sold " + value,
-                  text_auto=True,
-                  color_discrete_sequence=["#ffd520"]*len(top10_data_sold)
-                  )
-fig_sold.update_xaxes(tickangle=45)
-fig_sold.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
+with st.spinner("Generating figure..."):
+    fig_sold = px.bar(top10_data_sold, x="value", y="count",
+                    labels = {
+                        "value":" ",
+                        "count":"Count"
+                    },
+                    title = "Sold " + value,
+                    text_auto=True,
+                    color_discrete_sequence=["#ffd520"]*len(top10_data_sold)
+                    )
+    fig_sold.update_xaxes(tickangle=45)
+    fig_sold.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
 
 #Create top 10 appraised features barplot
-fig_appraised = px.bar(top10_data_appraised, x="value", y="count",
-                       labels = {
-                      "value":" ",
-                      "count":"Count"
-                  },
-                  title = "Appraised " + value,
-                  text_auto=True,
-                  color_discrete_sequence=["#ffd520"]*len(top10_data_appraised)
-                  )
-fig_appraised.update_xaxes(tickangle=45)
-fig_appraised.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
+with st.spinner("Generating figure..."):
+    fig_appraised = px.bar(top10_data_appraised, x="value", y="count",
+                        labels = {
+                        "value":" ",
+                        "count":"Count"
+                    },
+                    title = "Appraised " + value,
+                    text_auto=True,
+                    color_discrete_sequence=["#ffd520"]*len(top10_data_appraised)
+                    )
+    fig_appraised.update_xaxes(tickangle=45)
+    fig_appraised.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
 
 #Create two columns
 col1, col2 = st.columns(2)
@@ -121,7 +125,8 @@ def generate_scatter_data():
     return scatter_data
 
 #Create scatter plot data
-scatter_data = generate_scatter_data()
+with st.spinner("Filtering data..."):
+    scatter_data = generate_scatter_data()
 
 #Create list of numeric columns
 num_cols = list()
@@ -171,7 +176,8 @@ def generate_xy_choice_fig():
     return fig
 
 #Generate figure
-fig_scatter = generate_xy_choice_fig()
+with st.spinner("Generating figure..."):
+    fig_scatter = generate_xy_choice_fig()
 
 #Display figure
 st.plotly_chart(fig_scatter)
