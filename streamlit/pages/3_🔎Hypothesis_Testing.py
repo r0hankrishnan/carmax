@@ -63,4 +63,5 @@ with st.container(border=True):
     st.metric(label="T-statistic (from scipy):", value=round(t_stat,2).astype(str))
     st.metric(label="P-value (from scipy):", value=p_val.astype(str))
     st.metric(label="Decision:", value=f"{decision} the null hypothesis at alpha = {alpha}.")
-    st.subheader(f"Conclusion:{conclusion}")
+    st.divider()
+    st.subheader(conclusion)
