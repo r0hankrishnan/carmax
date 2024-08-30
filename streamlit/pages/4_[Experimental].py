@@ -13,65 +13,30 @@ def import_viz_data():
 
 #Load data
 data = import_viz_data()
-#Page title
-st.title("Run a t-test below!")
 
-st.markdown("*ANOVA testing coming soon!*")
-
-#T-test form
+#Title
+st.title("Run an ANOVA test below!")
+    
+#ANOVA form
 with st.container(border=True):
-    #Choice lists
     var_to_examine_choice = ["Appraisal Offer", "Price"]
     
-    #Define t-test variable and group
-    var_to_examine = st.selectbox(label="Pick a variable to examine", options=var_to_examine_choice).lower().replace(" ", "_")
-    st.write(var_to_examine)
-    if var_to_examine == "price":
-        group_to_compare_choice = ["Online Appraisal Flag", "Trim Level Premium",
-                                    "Cylinders High"]
-    else:
-        group_to_compare_choice = ["Online Appraisal Flag", "Trim Level Premium Appraisal", "Cylinders High Appraisal"]
-
-    group_to_compare = st.selectbox(label="Pick a group to compare", options=group_to_compare_choice).lower().replace(" ", "_")
-
-    #Submit button
-    t_test_submit = st.button("Run test")
+    var_to_examine = st.selectbox(label="Variable to examine", options=var_to_examine_choice).lower().replace(" ", "_")
     
-if not t_test_submit:
-    with st.container(border=True):
-        st.subheader("Submit the form above to run your t-test")
-            
-if t_test_submit:
-    #Create grouped lists
-    group_in = data[data[group_to_compare]==True][var_to_examine]
-    group_out = data[data[group_to_compare]==False][var_to_examine]
-
-    #Create null and alt hyp
-    null = "There is no difference between " +  var_to_examine.replace("_", " ") + " grouped by " + group_to_compare.replace("_", " ") + "."
-    alternative = "There is a difference between " + var_to_examine.replace("_", " ") + " grouped by "  + group_to_compare.replace("_", " ") + "."
-
-    #Set alpha
-    alpha = 0.50
-
-    #Generate t stat and p val using scipy
-    t_stat, p_val = stats.ttest_ind(group_in, group_out)
-
-    #Check p val and assign correct values to decision and conclusion
-    if p_val <= alpha:
-        decision = "Reject"
+    if var_to_examine == "price":
+        group_to_compare_choice = ["Color Grouped", "Vehicle Type", "Model Year", "Region"]
     else:
-        decision = "Fail to reject"
+        group_to_compare_choice = ["Color Grouped Appraisal", "Model Year Appraisal", "Region"]
+        
+    group_to_compare = st.selectbox(label="Groups to compare", options=group_to_compare_choice).lower().replace(" ", "_")
+    
+anova_dict = dict()
+def fill_anova_dict():
+    groups = data[group_to_compare].unique()
+    for i in groups:
+        anova_dict[i] = data[data[group_to_compare] == i][var_to_examine]
+    return anova_dict
 
-    # Conclusion
-    if decision == "Reject":
-        conclusion = "There is statistically significant evidence that the average "  + var_to_examine.replace("_", " ") + " is different when grouped by " + group_to_compare.replace("_", " ") + "."
-    else:
-        conclusion = "There is insufficient evidence to claim a significant difference in " + var_to_examine.replace("_", " ") + " when grouped by " + group_to_compare.replace("_", " ") + "."
+anova_dict = fill_anova_dict()
 
-    # Display results
-    with st.container(border=True):
-        st.metric(label="T-statistic (from scipy):", value=round(t_stat,2).astype(str))
-        st.metric(label="P-value (from scipy):", value=round(p_val,4).astype(str))
-        st.metric(label="Decision:", value=f"{decision} the null hypothesis at alpha = {alpha}.")
-        st.divider()
-        st.subheader(conclusion)
+st.write(anova_dict)
