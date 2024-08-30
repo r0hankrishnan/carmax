@@ -22,7 +22,7 @@ with st.container(border=True):
     
     #Define t-test variable and group
     var_to_examine = st.selectbox(label="Pick a variable to examine", options=var_to_examine_choice).lower().replace(" ", "_")
-    
+    st.write(var_to_examine)
     if var_to_examine_choice == "price":
         group_to_compare_choice = ["Online Appraisal Flag", "Trim Level Premium",
                                     "Cylinders High"]
