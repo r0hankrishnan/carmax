@@ -39,4 +39,4 @@ def fill_anova_dict():
 
 anova_dict = fill_anova_dict()
 
-anova_dict
+st.text(anova_dict)
