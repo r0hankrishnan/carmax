@@ -23,45 +23,56 @@ def import_viz_data():
 #Load data
 data = import_viz_data()
 
-#Choice lists
-var_to_examine_choice = ["Appraisal Offer", "Price"]
-group_to_compare_choice = ["Online Appraisal Flag", "Trim Level Premium Appraisal", "Trim Level Premium",
-                           "Cylinders High Appraisal", "Cylinders High"]
+#Sidebar
+with st.sidebar:
+    test_type = st.selectbox(label="What type of hypothesis do you want to conduct?",
+                             options=["T-test", "ANOVA (coming soon)"])
 
-#Define t-test variable and group
-var_to_examine = st.selectbox(label="Pick a variable to examine", options=var_to_examine_choice).lower().replace(" ", "_")
-group_to_compare = st.selectbox(label="Pick a group to compare", options=group_to_compare_choice).lower().replace(" ", "_")
+#If ANOVA 
+if test_type == "ANOVA (coming soon)":
+    st.warning("Sorry, ANOVA testing is not fully available yet. Please check back in later!")
+    
+#If T-test
+if test_type == "T-test":
+    #Choice lists
+    var_to_examine_choice = ["Appraisal Offer", "Price"]
+    group_to_compare_choice = ["Online Appraisal Flag", "Trim Level Premium Appraisal", "Trim Level Premium",
+                            "Cylinders High Appraisal", "Cylinders High"]
 
-#Create grouped lists
-group_in = data[data[group_to_compare]==True][var_to_examine]
-group_out = data[data[group_to_compare]==False][var_to_examine]
+    #Define t-test variable and group
+    var_to_examine = st.selectbox(label="Pick a variable to examine", options=var_to_examine_choice).lower().replace(" ", "_")
+    group_to_compare = st.selectbox(label="Pick a group to compare", options=group_to_compare_choice).lower().replace(" ", "_")
 
-#Create null and alt hyp
-null = "There is no difference between " +  var_to_examine.replace("_", " ") + " grouped by " + group_to_compare.replace("_", " ") + "."
-alternative = "There is a difference between " + var_to_examine.replace("_", " ") + " grouped by "  + group_to_compare.replace("_", " ") + "."
+    #Create grouped lists
+    group_in = data[data[group_to_compare]==True][var_to_examine]
+    group_out = data[data[group_to_compare]==False][var_to_examine]
 
-#Set alpha
-alpha = 0.50
+    #Create null and alt hyp
+    null = "There is no difference between " +  var_to_examine.replace("_", " ") + " grouped by " + group_to_compare.replace("_", " ") + "."
+    alternative = "There is a difference between " + var_to_examine.replace("_", " ") + " grouped by "  + group_to_compare.replace("_", " ") + "."
 
-#Generate t stat and p val using scipy
-t_stat, p_val = stats.ttest_ind(group_in, group_out)
+    #Set alpha
+    alpha = 0.50
 
-#Check p val and assign correct values to decision and conclusion
-if p_val <= alpha:
-    decision = "Reject"
-else:
-    decision = "Fail to reject"
+    #Generate t stat and p val using scipy
+    t_stat, p_val = stats.ttest_ind(group_in, group_out)
 
-# Conclusion
-if decision == "Reject":
-    conclusion = "There is statistically significant evidence that the average "  + var_to_examine.replace("_", " ") + " is different when grouped by " + group_to_compare.replace("_", " ") + "."
-else:
-    conclusion = "There is insufficient evidence to claim a significant difference in " + var_to_examine.replace("_", " ") + " when grouped by " + group_to_compare.replace("_", " ") + "."
+    #Check p val and assign correct values to decision and conclusion
+    if p_val <= alpha:
+        decision = "Reject"
+    else:
+        decision = "Fail to reject"
 
-# Display results
-with st.container(border=True):
-    st.metric(label="T-statistic (from scipy):", value=round(t_stat,2).astype(str))
-    st.metric(label="P-value (from scipy):", value=round(p_val,4).astype(str))
-    st.metric(label="Decision:", value=f"{decision} the null hypothesis at alpha = {alpha}.")
-    st.divider()
-    st.subheader(conclusion)
+    # Conclusion
+    if decision == "Reject":
+        conclusion = "There is statistically significant evidence that the average "  + var_to_examine.replace("_", " ") + " is different when grouped by " + group_to_compare.replace("_", " ") + "."
+    else:
+        conclusion = "There is insufficient evidence to claim a significant difference in " + var_to_examine.replace("_", " ") + " when grouped by " + group_to_compare.replace("_", " ") + "."
+
+    # Display results
+    with st.container(border=True):
+        st.metric(label="T-statistic (from scipy):", value=round(t_stat,2).astype(str))
+        st.metric(label="P-value (from scipy):", value=round(p_val,4).astype(str))
+        st.metric(label="Decision:", value=f"{decision} the null hypothesis at alpha = {alpha}.")
+        st.divider()
+        st.subheader(conclusion)
