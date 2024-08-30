@@ -53,7 +53,7 @@ if anova_submit:
     alpha = 0.50
 
     #Generate t stat and p val using scipy
-    t_stat, p_val = stats.f_oneway(*anova_dict)
+    t_stat, p_val = stats.f_oneway(*anova_dict.values())
 
     #Check p val and assign correct values to decision and conclusion
     if p_val <= alpha:
