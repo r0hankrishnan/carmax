@@ -9,11 +9,6 @@ st.set_page_config(page_title="Hypothesis Testing",
                    initial_sidebar_state="auto", 
                    menu_items=None)
 
-#Page title
-st.title("Run a t-test to determine if there is a significant difference between groups")
-
-st.markdown("*ANOVA testing coming soon!*")
-
 #Generate data
 @st.cache_data
 def import_viz_data():
@@ -34,6 +29,11 @@ if test_type == "ANOVA (coming soon)":
     
 #If T-test
 if test_type == "T-test":
+    
+    #Page title
+    st.title("Run a t-test below!")
+
+    st.markdown("*ANOVA testing coming soon!*")
     #Choice lists
     var_to_examine_choice = ["Appraisal Offer", "Price"]
     group_to_compare_choice = ["Online Appraisal Flag", "Trim Level Premium Appraisal", "Trim Level Premium",
