@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+from scipy import stats
 data = pd.read_csv("../data/viz.csv").drop("Unnamed: 0", axis = 1)
 value_choice = ["Vehicle Make", "Vehicle Model", 
                 "Vehicle Color"]
@@ -85,3 +86,19 @@ capital[1].lower().replace(" ", "_")
 data.columns
 
 data.color_grouped.unique()
+
+var_to_examine = "price"
+group_to_compare = "color_grouped"
+    
+anova_dict = dict()
+def fill_anova_dict():
+    groups = data[group_to_compare].unique()
+    for i in groups:
+        anova_dict[i] = data[data[group_to_compare] == i][var_to_examine]
+    return anova_dict
+
+anova_dict = fill_anova_dict()
+
+f_stat, p_val = stats.f_oneway(*anova_dict.values())
+
+print(stats.f_oneway(*anova_dict.values()))
