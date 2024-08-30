@@ -79,3 +79,9 @@ capital = [word.strip().title().replace("_", " ") for word in x_list]
 capital[0].lower()
 
 capital[1].lower().replace(" ", "_")
+
+
+#Figuring out how to do dynamic ANOVA tests in dashboard
+data.columns
+
+data.color_grouped.unique()
