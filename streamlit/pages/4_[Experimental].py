@@ -27,14 +27,14 @@ st.title("Run an ANOVA test below!")
 with st.container(border=True):
     var_to_examine_choice = ["Appraisal Offer", "Price"]
     
-    var_to_examine = st.selectbox(label="Variable to examine", options=var_to_examine_choice).lower().replace(" ", "_")
+    var_to_examine = st.selectbox(label="Pick a variable to examine", options=var_to_examine_choice).lower().replace(" ", "_")
     
     if var_to_examine == "price":
         group_to_compare_choice = ["Color Grouped", "Vehicle Type", "Model Year", "Region"]
     else:
-        group_to_compare_choice = ["Color Grouped Appraisal", "Vehicle Type Appraisal", "Model Year Appraisal", "Region"]
+        group_to_compare_choice = ["Color Grouped", "Vehicle Type", "Model Year", "Region"]
         
-    group_to_compare = st.selectbox(label="Groups to compare", options=group_to_compare_choice).lower().replace(" ", "_")
+    group_to_compare = st.selectbox(label="Pick a group to compare", options=group_to_compare_choice).lower().replace(" ", "_")
     
     anova_submit = st.button(label="Run ANOVA")
     
