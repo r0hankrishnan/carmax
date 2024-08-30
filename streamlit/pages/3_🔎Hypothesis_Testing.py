@@ -49,41 +49,41 @@ if test_type == "T-test":
         #Submit button
         t_test_submit = st.form_submit_button("Run test")
         
-        if not t_test_submit:
-            with st.container(border=True):
-                st.subheader("Submit the form above to run your t-test")
+    if not t_test_submit:
+        with st.container(border=True):
+            st.subheader("Submit the form above to run your t-test")
                 
-        if t_test_submit:
-            #Create grouped lists
-            group_in = data[data[group_to_compare]==True][var_to_examine]
-            group_out = data[data[group_to_compare]==False][var_to_examine]
+    if t_test_submit:
+        #Create grouped lists
+        group_in = data[data[group_to_compare]==True][var_to_examine]
+        group_out = data[data[group_to_compare]==False][var_to_examine]
 
-            #Create null and alt hyp
-            null = "There is no difference between " +  var_to_examine.replace("_", " ") + " grouped by " + group_to_compare.replace("_", " ") + "."
-            alternative = "There is a difference between " + var_to_examine.replace("_", " ") + " grouped by "  + group_to_compare.replace("_", " ") + "."
+        #Create null and alt hyp
+        null = "There is no difference between " +  var_to_examine.replace("_", " ") + " grouped by " + group_to_compare.replace("_", " ") + "."
+        alternative = "There is a difference between " + var_to_examine.replace("_", " ") + " grouped by "  + group_to_compare.replace("_", " ") + "."
 
-            #Set alpha
-            alpha = 0.50
+        #Set alpha
+        alpha = 0.50
 
-            #Generate t stat and p val using scipy
-            t_stat, p_val = stats.ttest_ind(group_in, group_out)
+        #Generate t stat and p val using scipy
+        t_stat, p_val = stats.ttest_ind(group_in, group_out)
 
-            #Check p val and assign correct values to decision and conclusion
-            if p_val <= alpha:
-                decision = "Reject"
-            else:
-                decision = "Fail to reject"
+        #Check p val and assign correct values to decision and conclusion
+        if p_val <= alpha:
+            decision = "Reject"
+        else:
+            decision = "Fail to reject"
 
-            # Conclusion
-            if decision == "Reject":
-                conclusion = "There is statistically significant evidence that the average "  + var_to_examine.replace("_", " ") + " is different when grouped by " + group_to_compare.replace("_", " ") + "."
-            else:
-                conclusion = "There is insufficient evidence to claim a significant difference in " + var_to_examine.replace("_", " ") + " when grouped by " + group_to_compare.replace("_", " ") + "."
+        # Conclusion
+        if decision == "Reject":
+            conclusion = "There is statistically significant evidence that the average "  + var_to_examine.replace("_", " ") + " is different when grouped by " + group_to_compare.replace("_", " ") + "."
+        else:
+            conclusion = "There is insufficient evidence to claim a significant difference in " + var_to_examine.replace("_", " ") + " when grouped by " + group_to_compare.replace("_", " ") + "."
 
-            # Display results
-            with st.container(border=True):
-                st.metric(label="T-statistic (from scipy):", value=round(t_stat,2).astype(str))
-                st.metric(label="P-value (from scipy):", value=round(p_val,4).astype(str))
-                st.metric(label="Decision:", value=f"{decision} the null hypothesis at alpha = {alpha}.")
-                st.divider()
-                st.subheader(conclusion)
+        # Display results
+        with st.container(border=True):
+            st.metric(label="T-statistic (from scipy):", value=round(t_stat,2).astype(str))
+            st.metric(label="P-value (from scipy):", value=round(p_val,4).astype(str))
+            st.metric(label="Decision:", value=f"{decision} the null hypothesis at alpha = {alpha}.")
+            st.divider()
+            st.subheader(conclusion)
