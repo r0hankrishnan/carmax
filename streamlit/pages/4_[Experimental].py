@@ -44,9 +44,7 @@ if not anova_submit:
 
 if anova_submit:
     anova_dict = dict()
-
-
-anova_dict = fill_anova_dict()
+    anova_dict = fill_anova_dict(anova_dict)
 
 st.text(anova_dict)
     
