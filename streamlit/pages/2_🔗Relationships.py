@@ -28,6 +28,10 @@ region_choice = np.append("All", data.region.unique())
 with st.sidebar:
     st.subheader("🌎 Global Filters")
     region = st.selectbox(label="Choose a region", options=region_choice)
+    st.divider()
+    st.subheader("Figures")
+    sold_fig = st.checkbox(label="Show sold vehicles' correlation matrix", value=True)
+    appraisal_fig = st.checkbox(label="Show appraised vehicles' correlation matrix", value = True)
     
 #Filter for numeric columns
 num_cols = list()
@@ -86,5 +90,12 @@ fig_corr_appraised.update_layout(width=1000,height=600)
 
 
 #Display charts
-st.plotly_chart(fig_corr_sold)
-st.plotly_chart(fig_corr_appraised)
+if sold_fig:
+    st.plotly_chart(fig_corr_sold)
+else:
+    st.toast(body="Check the box to show the correlations for sold vehicles!")
+    
+if appraisal_fig:
+    st.plotly_chart(fig_corr_appraised)
+else:
+    st.toast(body="Check the box to show the correlations for appraised vehicles!")
