@@ -31,6 +31,11 @@ if test_type == "ANOVA (coming soon)":
 if 2==1:
     st.title("Run an ANOVA test below!")
     
+    #ANOVA form
+    with st.form(key="anova", clear_on_submit=False):
+        var_to_examine_choice = ["Appraisal Offer", "Price"]
+        group_to_compare = [""]
+    
 #If T-test
 if test_type == "T-test":
     
@@ -40,11 +45,14 @@ if test_type == "T-test":
     st.markdown("*ANOVA testing coming soon!*")
     
     #T-test form
-    with st.form("t_test", clear_on_submit=False):
+    with st.form(key="t_test", clear_on_submit=False):
         #Choice lists
         var_to_examine_choice = ["Appraisal Offer", "Price"]
-        group_to_compare_choice = ["Online Appraisal Flag", "Trim Level Premium Appraisal", "Trim Level Premium",
-                                "Cylinders High Appraisal", "Cylinders High"]
+        if var_to_examine_choice == "Price":
+            group_to_compare_choice = ["Online Appraisal Flag", "Trim Level Premium",
+                                       "Cylinders High"]
+        else:
+            group_to_compare_choice = ["Online Appraisal Flag", "Trim Level Premium Appraisal", "Cylinders High Appraisal"]
 
         #Define t-test variable and group
         var_to_examine = st.selectbox(label="Pick a variable to examine", options=var_to_examine_choice).lower().replace(" ", "_")
