@@ -30,7 +30,7 @@ data = import_viz_data()
 #Sidebar
 with st.sidebar:
     test_type = st.selectbox(label="What type of hypothesis do you want to conduct?",
-                             options=["T-test", "ANOVA"])
+                             options=["Help", "T-test", "ANOVA"])
 
 #----ANOVA-----#
 #If ANOVA 
@@ -92,12 +92,10 @@ if test_type == "ANOVA":
     
 #-----T TEST------#
 #If T-test
-if test_type == "T-test":
+elif test_type == "T-test":
     
     #Page title
     st.title("Run a t-test below!")
-
-    st.markdown("*ANOVA testing coming soon!*")
     
     #T-test form
     with st.container(border=True):
@@ -156,3 +154,6 @@ if test_type == "T-test":
             st.metric(label="Decision:", value=f"{decision} the null hypothesis at alpha = {alpha}.")
             st.divider()
             st.subheader(conclusion)
+
+else:
+    st.write("this is a help section (WIP)")
