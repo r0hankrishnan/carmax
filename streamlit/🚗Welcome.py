@@ -7,7 +7,7 @@ st.set_page_config(page_title="Welcome",
 
 
 
-st.title("Welcome to my CarMax Analytics Dashboard")
+st.title("🚗 CarMax Analytics Dashboard")
 st.divider()
 st.markdown("### Continue reading below to learn what else is available in this web application.")
 

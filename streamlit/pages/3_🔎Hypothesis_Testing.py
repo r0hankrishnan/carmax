@@ -29,7 +29,7 @@ if test_type == "ANOVA (coming soon)":
              icon="⚠️")
 
 if 2==1:
-    st.write("Hi")
+    st.title("Run an ANOVA test below!")
     
 #If T-test
 if test_type == "T-test":
