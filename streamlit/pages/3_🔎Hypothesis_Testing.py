@@ -25,7 +25,8 @@ with st.sidebar:
 
 #If ANOVA 
 if test_type == "ANOVA (coming soon)":
-    st.warning("Sorry, ANOVA testing is not fully available yet. Please check back in later!")
+    st.error("Sorry, ANOVA testing is not fully available yet. Please check back in later!",
+             icon="⚠️")
     
 #If T-test
 if test_type == "T-test":
