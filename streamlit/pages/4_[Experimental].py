@@ -32,7 +32,7 @@ with st.container(border=True):
     if var_to_examine == "price":
         group_to_compare_choice = ["Color Grouped", "Vehicle Type", "Model Year", "Region"]
     else:
-        group_to_compare_choice = ["Color Grouped Appraisal", "Model Year Appraisal", "Region"]
+        group_to_compare_choice = ["Color Grouped Appraisal", "Vehicle Type Appraisal", "Model Year Appraisal", "Region"]
         
     group_to_compare = st.selectbox(label="Groups to compare", options=group_to_compare_choice).lower().replace(" ", "_")
     
