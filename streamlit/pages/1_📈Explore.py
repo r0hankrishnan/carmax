@@ -176,10 +176,10 @@ def generate_xy_choice_fig():
     return fig
 
 #Generate figure
-with st.spinner("Generating figure..."):
-    fig_scatter = generate_xy_choice_fig()
+fig_scatter = generate_xy_choice_fig()
 
 #Display figure
-st.plotly_chart(fig_scatter)
+with st.spinner("Generating figure..."):
+    st.plotly_chart(fig_scatter)
 
 
