@@ -63,7 +63,7 @@ if anova_submit:
 
     # Conclusion
     if decision == "Reject":
-        conclusion = "There is statistically significant evidence that at least one of the groups across " + group_to_compare.replace("_", " ") +  "have a different average "  + var_to_examine.replace("_", " ") + " than the others."
+        conclusion = "There is statistically significant evidence that at least one of the groups across " + group_to_compare.replace("_", " ") +  " have a different average "  + var_to_examine.replace("_", " ") + " than the others."
     else:
         conclusion = "There is insufficient evidence to claim a significant difference in average " + var_to_examine.replace("_", " ") + " across " + group_to_compare.replace("_", " ") + "."
 
