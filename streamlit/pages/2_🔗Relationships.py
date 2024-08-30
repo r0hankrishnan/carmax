@@ -94,10 +94,10 @@ if sold_fig:
     st.plotly_chart(fig_corr_sold)
 else:
     st.toast(body="Check the box to show the correlations for sold vehicles!",
-             icon="✅")
+             icon="❗️")
     
 if appraisal_fig:
     st.plotly_chart(fig_corr_appraised)
 else:
     st.toast(body="Check the box to show the correlations for appraised vehicles!",
-             icon="✅")
+             icon="❗️")
