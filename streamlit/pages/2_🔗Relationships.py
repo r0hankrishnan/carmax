@@ -19,8 +19,7 @@ def import_viz_data():
     
     return data
 #Load data
-with st.spinner("Loading data..."):
-    data = import_viz_data()
+data = import_viz_data()
 
 #Region choice list
 region_choice = np.append("All", data.region.unique())
@@ -61,14 +60,12 @@ def generate_correlations_sold():
     return correlations_sold
 
 #Create corr data for purchased vehicles
-with st.spinner("Calculating correlations..."):
-    correlations_sold = generate_correlations_sold()
+correlations_sold = generate_correlations_sold()
 
 #Generate correlation matrix and update size
-with st.spinner("Generating figure..."):
-    fig_corr_sold = px.imshow(correlations_sold, x= purchased_cols_display, y = purchased_cols_display,
-                    text_auto=True, color_continuous_scale=["white", "#ffd520"])
-    fig_corr_sold.update_layout(width=1000,height=600)
+fig_corr_sold = px.imshow(correlations_sold, x= purchased_cols_display, y = purchased_cols_display,
+                text_auto=True, color_continuous_scale=["white", "#ffd520"])
+fig_corr_sold.update_layout(width=1000,height=600)
 
 #Generate correlation matrix data for appraised vehicles
 def generate_correlations_appraisal():
@@ -80,14 +77,12 @@ def generate_correlations_appraisal():
     return correlations_appraisal
 
 #Load corr data for appraised vehicles
-with st.spinner("Calculating correlations..."):
-    correlations_appraisal = generate_correlations_appraisal()
+correlations_appraisal = generate_correlations_appraisal()
 
 #Generate correlation matrix and update size
-with st.spinner("Generating figure..."):
-    fig_corr_appraised = px.imshow(correlations_appraisal, x=appraised_cols_display, y=appraised_cols_display, 
-                    text_auto=True, color_continuous_scale=["white", "#ffd520"])
-    fig_corr_appraised.update_layout(width=1000,height=600)
+fig_corr_appraised = px.imshow(correlations_appraisal, x=appraised_cols_display, y=appraised_cols_display, 
+                text_auto=True, color_continuous_scale=["white", "#ffd520"])
+fig_corr_appraised.update_layout(width=1000,height=600)
 
 
 #Display charts

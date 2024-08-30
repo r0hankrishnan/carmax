@@ -19,8 +19,7 @@ def import_viz_data():
     return data
 
 #Load data
-with st.spinner("Loading data..."):
-    data = import_viz_data()
+data = import_viz_data()
 
 #Define filter choices 
 region_choice = np.append("All", data.region.unique())
@@ -76,37 +75,34 @@ def generate_top10_data_appraised():
     return top10_data_appraised
 
 #Create data  
-with st.spinner("Calculating top 10..."):
-    top10_data_sold = generate_top10_data_sold()
-    top10_data_appraised = generate_top10_data_appraised()
+top10_data_sold = generate_top10_data_sold()
+top10_data_appraised = generate_top10_data_appraised()
 
 #Generate top 10 sold features bar plot
-with st.spinner("Generating figure..."):
-    fig_sold = px.bar(top10_data_sold, x="value", y="count",
-                    labels = {
-                        "value":" ",
-                        "count":"Count"
-                    },
-                    title = "Sold " + value,
-                    text_auto=True,
-                    color_discrete_sequence=["#ffd520"]*len(top10_data_sold)
-                    )
-    fig_sold.update_xaxes(tickangle=45)
-    fig_sold.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
+fig_sold = px.bar(top10_data_sold, x="value", y="count",
+                labels = {
+                    "value":" ",
+                    "count":"Count"
+                },
+                title = "Sold " + value,
+                text_auto=True,
+                color_discrete_sequence=["#ffd520"]*len(top10_data_sold)
+                )
+fig_sold.update_xaxes(tickangle=45)
+fig_sold.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
 
 #Create top 10 appraised features barplot
-with st.spinner("Generating figure..."):
-    fig_appraised = px.bar(top10_data_appraised, x="value", y="count",
-                        labels = {
-                        "value":" ",
-                        "count":"Count"
-                    },
-                    title = "Appraised " + value,
-                    text_auto=True,
-                    color_discrete_sequence=["#ffd520"]*len(top10_data_appraised)
-                    )
-    fig_appraised.update_xaxes(tickangle=45)
-    fig_appraised.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
+fig_appraised = px.bar(top10_data_appraised, x="value", y="count",
+                    labels = {
+                    "value":" ",
+                    "count":"Count"
+                },
+                title = "Appraised " + value,
+                text_auto=True,
+                color_discrete_sequence=["#ffd520"]*len(top10_data_appraised)
+                )
+fig_appraised.update_xaxes(tickangle=45)
+fig_appraised.update_traces(textfont_size=12, textangle=0, textposition="outside", cliponaxis=False)
 
 #Create two columns
 col1, col2 = st.columns(2)
@@ -125,8 +121,7 @@ def generate_scatter_data():
     return scatter_data
 
 #Create scatter plot data
-with st.spinner("Filtering data..."):
-    scatter_data = generate_scatter_data()
+scatter_data = generate_scatter_data()
 
 #Create list of numeric columns
 num_cols = list()
@@ -179,7 +174,6 @@ def generate_xy_choice_fig():
 fig_scatter = generate_xy_choice_fig()
 
 #Display figure
-with st.spinner("Generating figure..."):
-    st.plotly_chart(fig_scatter)
+st.plotly_chart(fig_scatter)
 
 
