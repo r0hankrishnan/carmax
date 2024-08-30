@@ -59,7 +59,7 @@ else:
     conclusion = "There is insufficient evidence to claim a significant difference in " + var_to_examine.replace("_", " ") + " when grouped by " + group_to_compare.replace("_", " ") + "."
 
 # Display results
-st.write("T-statistic (from scipy):", t_stat.astype(str))
+st.write("T-statistic (from scipy):", round(t_stat,2).astype(str))
 st.write("P-value (from scipy):", p_val.astype(str))
 st.write(f"Decision: {decision} the null hypothesis at alpha = {alpha}.")
 st.write("Conclusion:", conclusion)
