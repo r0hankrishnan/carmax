@@ -64,5 +64,5 @@ st.metric(label="Temperature", value="70 °F", delta="1.2 °F")
 st.metric(label="T-statistic (from scipy):", value=round(t_stat,2).astype(str))
 st.metric(label="P-value (from scipy):", value=p_val.astype(str))
 with st.container(border=True):
-    st.header(label=f"Decision: {decision} the null hypothesis at alpha = {alpha}.")
+    st.header(f"Decision: {decision} the null hypothesis at alpha = {alpha}.")
     st.subheader("Conclusion:", conclusion)
