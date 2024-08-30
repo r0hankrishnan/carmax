@@ -11,7 +11,7 @@ def import_viz_data():
     data = pd.read_csv("./data/viz.csv").drop("Unnamed: 0", axis = 1)
     return data
 
-def fill_anova_dict():
+def fill_anova_dict(anova_dict):
     groups = data[group_to_compare].unique()
     for i in groups:
         anova_dict[i] = data[data[group_to_compare] == i][var_to_examine]
