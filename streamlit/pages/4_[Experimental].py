@@ -45,6 +45,34 @@ if not anova_submit:
 if anova_submit:
     anova_dict = dict()
     anova_dict = fill_anova_dict(anova_dict)
+    
+    null = "There is no difference between " +  var_to_examine.replace("_", " ") + " across " + group_to_compare.replace("_", " ") + "."
+    alternative = "There is a difference between " + var_to_examine.replace("_", " ") + " across "  + group_to_compare.replace("_", " ") + "."
 
-st.text(anova_dict)
+    #Set alpha
+    alpha = 0.50
+
+    #Generate t stat and p val using scipy
+    t_stat, p_val = stats.f_oneway(*anova_dict)
+
+    #Check p val and assign correct values to decision and conclusion
+    if p_val <= alpha:
+        decision = "Reject"
+    else:
+        decision = "Fail to reject"
+
+    # Conclusion
+    if decision == "Reject":
+        conclusion = "There is statistically significant evidence that at least one of the groups across " + group_to_compare.replace("_", " ") +  "have a different average "  + var_to_examine.replace("_", " ") + " than the others."
+        conclusion = "There is insufficient evidence to claim a significant difference in average " + var_to_examine.replace("_", " ") + " across " + group_to_compare.replace("_", " ") + "."
+
+    # Display results
+    with st.container(border=True):
+        st.metric(label="T-statistic (from scipy):", value=round(t_stat,2).astype(str))
+        st.metric(label="P-value (from scipy):", value=round(p_val,4).astype(str))
+        st.metric(label="Decision:", value=f"{decision} the null hypothesis at alpha = {alpha}.")
+        st.divider()
+        st.subheader(conclusion)
+
+
     
