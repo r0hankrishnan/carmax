@@ -37,3 +37,9 @@ For my inital exploration of the data, I used a simple python file (`eda/raw-eda
 
 
 ## Dashboarding
+The last part of my project was to translate my findings into a user-friendly dashboard. The dashboard I created allows non-technical users to explore data across all regions or in specific regions. It also allows more technical users to view relationships between variables and conduct hypothesis tests. 
+
+![dashboard 1](./assets/dashboard_1.png)
+![dashboard 2](./assets/dashboard_2.png)
+![dashboard 3](./assets/dashboard_3.png)
+![dashboard 4](./assets/dashboard_4.png)
