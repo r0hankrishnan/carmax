@@ -27,11 +27,13 @@ For my inital exploration of the data, I used a simple python file (`eda/raw-eda
 Structured walkthroughs of the [data exploration](./eda/exploration.ipynb) and [visualization](./eda/visualization.ipynb) can be found in the `eda` folder.
 
 ## Modeling
+In terms of modeling, I decided to only try a few models. I experimented with a pcr using only quanititative variables, random forest and factor analysis of mixed data with quantitative and categorical variables, and a lasso model with only quantitative variables.
 
+Overall, none of the models performed very well. Interestingly, some of the models returned errors close to 15%, meaning that an inverse model would have performed quite well. These results indicate that there is some fundamental error occuring in the modeling process. Due to time constraints, I decided to focus on visualization, exploration, and dashboarding. 
 
 
 ## Conclusions
-
+My main goals with this project was to focus on exploration and business inference. Using python, I explored and visualized the carmax data to identify trends in vehicle types and across regions. Below are some pictures of my final dashboard.
 
 
 ## Dashboarding
