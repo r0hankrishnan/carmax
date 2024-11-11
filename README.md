@@ -1,5 +1,5 @@
 # CarMax Analytics
-*If you are visiting from my CV, you can view my R code for the competition in the `comp-code.txt` file. Apologies for the incomplete README, I am currently restarting this project in Python!*
+*If you are visiting from my CV, you can view my R code for the competition in the `comp-code.txt` file.*
 
 <p align="center">
   <img src = "./assets/logo.png">
