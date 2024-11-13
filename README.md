@@ -7,16 +7,25 @@
 
 ## Table of Contents
 1. [Introduction](#Introduction)
-2. [Data](#Data)
-3. [EDA](#EDA)
-4. [Modeling](#Modeling)
-5. [Conclusions](#Conclusions)
-6. [Dashboarding](#Dashboarding)
+2. [Main Takeaways](#main-takeaways)
+3. [Data](#Data)
+4. [EDA](#EDA)
+5. [Modeling](#Modeling)
+6. [Conclusions](#Conclusions)
+7. [Dashboarding](#Dashboarding)
 
 ## Introduction
 The initial problem posed by CarMax for this analytics showcase was to uncover what features were driving CarMax customers' purchases. 
 
 I will use Python programming and dashboarding to explore, model, and cleanly present findings from this data.
+
+
+## Main Takeaways
+1. Standardize in-store appraisal procedures to reduce differences in average appraisal offer between in-store and online interactions
+2. Ensure adequate stock of Ford vehicles in Southern distribution channels and Toyota in Western distribution channels
+3. Adjust car make recommendations based on appraisal car mileage (show similar brands to people who traded in high-mileage cars)
+4. Adjust vehicle type recommendations based on appraisal car mileage (show similar vehicle types to people who traded in high-mileage cars)
+5. Make highway MPG, mileage, and price directly visible on each car’s profile to improve ease of shopping for customers
 
 ## Data
 The provided data contained 132,717 observations and 31 variables. It contained two sets of feature variables. One for describing cars customers brought in for appraisal and another of the same type for the car that customer eventually purchased. It also contained some information about the transaction (whether it occurred online or in-person, what state it was in, etc.). 
