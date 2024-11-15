@@ -51,4 +51,8 @@ The last part of my project was to translate my findings into a user-friendly da
 ![dashboard 1](./assets/dashboard_1.png)
 ![dashboard 2](./assets/dashboard_2.png)
 ![dashboard 3](./assets/dashboard_3.png)
+
+https://github.com/user-attachments/assets/c7bb68ef-5ad3-42bf-ad9f-d51b7d41dce4
+
+
 ![dashboard 4](./assets/dashboard_4.png)
