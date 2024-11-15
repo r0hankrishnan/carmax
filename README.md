@@ -52,3 +52,5 @@ https://github.com/user-attachments/assets/0258614e-afac-4b79-8cfe-85c76b3b2b7a
 
 ![demo video](./assets/carmax_dashboard_demo.mp4)
 
+<img src="./assets/carmax_dashboard_demo.mp4" width="200">
+
