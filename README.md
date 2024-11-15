@@ -15,11 +15,16 @@
 7. [Dashboarding](#Dashboarding)
 
 ## Introduction
-The initial problem posed by CarMax for this analytics showcase was to uncover what features were driving CarMax customers' purchases. 
+The initial problem posed by CarMax for this analytics showcase was to uncover what features were driving CarMax customers' purchases. I will use Python programming and dashboarding to explore, model, and cleanly present findings from this data.
 
-I will use Python programming and dashboarding to explore, model, and cleanly present findings from this data.
+### Role
+For this project, I am acting as a data analyst for CarMax who is responsible for understanding the driving factors behind our customers' purchasind decisions. Rather than highly accurate predictions, it is important to understand the specific impact each variable in the data is having on our target variable (qualities of purchased vehicle). 
 
+### Domain Background
 
+CarMax has seen a 9.1% increase in total gross profit compared to last year's second quarter. Retail used vehicle gross profit increased 5.9% and retail gross profit per unit was in line with last year's second quarter. As Carmax seeks to continue their strong performance, a keen and precise underastanding of their customer's purchasing habits is extremely important.
+
+---
 ## Main Takeaways
 1. Standardize in-store appraisal procedures to reduce differences in average appraisal offer between in-store and online interactions
 2. Ensure adequate stock of Ford vehicles in Southern distribution channels and Toyota in Western distribution channels
@@ -28,7 +33,9 @@ I will use Python programming and dashboarding to explore, model, and cleanly pr
 5. Make highway MPG, mileage, and price directly visible on each car’s profile to improve ease of shopping for customers
 
 ## Data
-The provided data contained 132,717 observations and 31 variables. It contained two sets of feature variables. One for describing cars customers brought in for appraisal and another of the same type for the car that customer eventually purchased. It also contained some information about the transaction (whether it occurred online or in-person, what state it was in, etc.). 
+The provided data contained 132,717 observations and 31 variables. It contained two sets of feature variables. One for describing cars customers brought in for appraisal and another of the same type for the car that customer eventually purchased. It also contained some information about the transaction (whether it occurred online or in-person, what state it was in, etc.). Each row of the dataset represented a customer transaction in which they got a car appraised and purchased a car from CarMax.
+
+![image](https://github.com/user-attachments/assets/f09daa01-c868-4bb9-a273-8f524ad59257)
 
 ## EDA
 For my inital exploration of the data, I used a simple python file (`eda/raw-eda.py`). In this file I iteratively write code to explore and clean the data using a side-by-side interactive jupyter notebook session. This allows me to adjust my data while not having to worry about code blocks or markdown cells. The purpose of this file is to do a messier exploration of the entire data, identify areas of interest, and clean up any discrepencies in the data. Then, using sections of the code from this file, I will make focused notebooks that convey a narrative and can be presented to CarMax. 
@@ -50,7 +57,4 @@ The last part of my project was to translate my findings into a user-friendly da
 
 https://github.com/user-attachments/assets/0258614e-afac-4b79-8cfe-85c76b3b2b7a
 
-![demo video](./assets/carmax_dashboard_demo.mp4)
-
-<img src="./assets/carmax_dashboard_demo.mp4" width="200">
 
